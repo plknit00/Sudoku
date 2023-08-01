@@ -1,3 +1,4 @@
+#include <cerrno>
 #include <cstdint>
 #include <iostream>
 #include <optional>
@@ -23,14 +24,12 @@ public:
   void instructions();
 
   // Checks if an input is a value 1-9
-  bool good_value(int val);
+  bool good_value(long int val);
 
   // Checks if a cell is empty
   bool cell_empty(int row, int col);
 
-  /**
-   * Continually promtps user for digit 1-9 until one is given
-   */
+  // Continually promtps user for digit 1-9 until one is given
   int prompt_for_digit(const string &prompt);
 
   // Takes in information from user on row and column number
@@ -52,6 +51,10 @@ public:
   // returns true if it is a valid entry
   bool valid_entry(int r, int c, int v);
 
-  // When the board is full and all entries are valid, game is finished
+  // When the board is full, the game is finished.
+  // Correctness is checked at every new entry, so it need not be checked here.
   bool finished();
+
+  // Solves the board and prints solution
+  void solve();
 };

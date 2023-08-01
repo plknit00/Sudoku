@@ -1,14 +1,13 @@
 #include "sudoku.h"
+#include <cerrno>
 #include <cstdint>
 #include <iostream>
 #include <optional>
 #include <string>
 using namespace std;
 
-// CONSTRUCTOR
 Sudoku::Sudoku() : board{0}, empty_cells(81){};
 
-// Prints the board at every step
 void Sudoku::print_board() {
   cout << " - - - - - - - - - - - -" << endl;
   for (int roww = 0; roww < 9; roww++) {
@@ -41,7 +40,6 @@ void Sudoku::print_board() {
   }
 }
 
-// Fills in starting values for an easy board
 void Sudoku::set_starter_board_easy() {
   board[0][1] = 3;
   board[0][8] = 1;
@@ -79,7 +77,6 @@ void Sudoku::set_starter_board_easy() {
   empty_cells = 48;
 }
 
-// Gives user list of rules to play the game
 void Sudoku::instructions() {
   cout << endl;
   cout << "Welcome to Sudoku!" << endl;
@@ -99,27 +96,29 @@ void Sudoku::instructions() {
   cout << endl;
 }
 
-// Checks if an input is a value 1-9
-bool Sudoku::good_value(int val) { return (val >= 1 && val <= 9); }
+bool Sudoku::good_value(long int val) { return (val >= 1 && val <= 9); }
 
-// Checks if a cell is empty
 bool Sudoku::cell_empty(int row, int col) { return board[row][col] == 0; }
 
 int Sudoku::prompt_for_digit(const string &prompt) {
   string str;
   cout << prompt << ": ";
   getline(cin, str);
-  int val = stoi(str);
-  while (!good_value(val)) {
+  char *pEnd;
+  // attempts to switch str input to integer
+  // strtol changes pEnd to point to one past
+  // the last character parsed in str
+  long int val = strtol(str.c_str(), &pEnd, 10);
+  // they will be equal if ptr is an int
+  while (((str.c_str() + str.size()) != pEnd) || !good_value(val)) {
     cout << "Invalid input. This value must be a number 1-9." << endl;
     cout << prompt << ": ";
     getline(cin, str);
-    int val = stoi(str);
+    val = strtol(str.c_str(), &pEnd, 10);
   }
+  return static_cast<int>(val);
 }
 
-// Takes in information from user on row and column number
-// along with entry attempt, it is checked if it is valid
 void Sudoku::game_input() {
   int row = prompt_for_digit("Row");
   int col = prompt_for_digit("Col");
@@ -136,8 +135,6 @@ void Sudoku::game_input() {
   }
 }
 
-// Checks that a new entry is not a repeat within a row
-// returns true if it is a valid entry
 bool Sudoku::check_row(int col, int val) {
   for (int row = 0; row < 9; row++) {
     if (val == board[row][col]) {
@@ -147,8 +144,6 @@ bool Sudoku::check_row(int col, int val) {
   return true;
 }
 
-// Checks that a new entry is not a repeat within a column
-// returns true if it is a valid entry
 bool Sudoku::check_col(int row, int val) {
   for (int col = 0; col < 9; col++) {
     if (val == board[row][col]) {
@@ -158,8 +153,6 @@ bool Sudoku::check_col(int row, int val) {
   return true;
 }
 
-// Checks that a new entry is not a repeat within a box
-// returns true if it is a valid entry
 bool Sudoku::check_box(int row, int col, int val) {
   for (int r = 0; r < 3; r++) {
     for (int c = 0; c < 3; c++) {
@@ -171,10 +164,14 @@ bool Sudoku::check_box(int row, int col, int val) {
   return true;
 }
 
-// returns true if it is a valid entry
 bool Sudoku::valid_entry(int r, int c, int v) {
   return check_row(c, v) && check_col(r, v) && check_box(r, c, v);
 }
 
-// When the board is full and all entries are valid, game is finished
 bool Sudoku::finished() { return empty_cells == 0; }
+
+// Solves the board and prints solution
+void Sudoku::solve() {
+  // solve stuff
+  print_board();
+}
