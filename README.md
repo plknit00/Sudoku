@@ -30,5 +30,5 @@ Debug:
 Eventual To Do:
 1. Make the game prettier using box drawing characters
 https://en.m.wikipedia.org/wiki/Box-drawing_characters
-2. Make different starting boards
+2. Make different starting boards of varying difficulty
 3. Make sudoku game solver
