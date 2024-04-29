@@ -26,3 +26,9 @@ Debug:
 7. p <variable> to print variable's value
 8. q to quit
 9. y for yes
+
+Eventual To Do:
+1. Make the game prettier using box drawing characters
+https://en.m.wikipedia.org/wiki/Box-drawing_characters
+2. Make different starting boards
+3. Make sudoku game solver
